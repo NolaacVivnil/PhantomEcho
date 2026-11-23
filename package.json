@@ -1,0 +1,16 @@
+{
+  "name": "game-room",
+  "version": "1.0.0",
+  "description": "Game Room: sign in / register, join a lobby over Socket.IO, and play a 2-player lucky draw",
+  "main": "game_server.js",
+  "scripts": {
+    "start": "node game_server.js",
+    "test": "node test/lobby.test.js && node test/game.test.js && node test/lighting.test.js"
+  },
+  "dependencies": {
+    "argon2": "^0.44.0",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "socket.io": "^4.8.4"
+  }
+}

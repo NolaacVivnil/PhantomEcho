@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>PHANTOM ECHO</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="game-room-area">
+
+        <!-- Start page -->
+        <div id="game-room-start-page">
+            <div class="row">
+                <div class="col">
+                    <div class="title">PHANTOM ECHO</div>
+                    <div class="row">
+                        <button id="start-signin-button">Sign In</button>
+                        <button id="start-register-button">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register page -->
+        <div id="game-room-register-page" style="display: none">
+            <div class="row">
+                <form id="register-form" class="col">
+                    <div class="subtitle">Register</div>
+                    <input id="register-username" maxlength="10" placeholder="Enter your username">
+                    <input id="register-password" type="password" placeholder="Enter your password">
+                    <input id="register-confirm" type="password" placeholder="Enter your password again">
+                    <div class="row">
+                        <button id="register-button" type="submit">Register</button>
+                        <button class="back-button" type="button">Back</button>
+                    </div>
+                    <div id="register-message" class="message"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sign in page -->
+        <div id="game-room-signin-page" style="display: none">
+            <div class="row">
+                <form id="signin-form" class="col">
+                    <div class="subtitle">Sign In</div>
+                    <input id="signin-username" placeholder="Enter your username">
+                    <input id="signin-password" type="password" placeholder="Enter your password">
+                    <div class="row">
+                        <button id="signin-button" type="submit">Sign In</button>
+                        <button class="back-button" type="button">Back</button>
+                    </div>
+                    <div id="signin-message" class="message"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Content page (signed in, not yet in the lobby) -->
+        <div id="game-room-content-page" style="display: none">
+            <div class="row">
+                <div class="col">
+                    <div class="title">
+                        Hello <span id="game-room-user-name">name</span>!
+                    </div>
+                    <div id="game-room-user-record" class="message"></div>
+                    <div class="row">
+                        <button id="join-lobby-button" type="button">Join Lobby</button>
+                        <button id="signout-button" type="button">Sign Out</button>
+                    </div>
+                    <div id="content-message" class="message"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lobby / game page -->
+        <div id="game-room-lobby-page" style="display: none">
+            <div class="col">
+                <div class="title">INSTRUCTIONS</div>
+                <div class="row instructions">
+                    <div id="instruction1" class="col instruction">
+                        <div class="avatar"></div>
+                        <div class="textname">Find Echo!</div>
+                        <div class="textblock">Move with WASD/arrows.</div>
+                    </div>
+                    <div id="instruction2" class="col instruction">
+                        <div class="avatar"></div>
+                        <div class="textname">Beware of Phantoms!</div>
+                        <div class="textblock">…or they take your soul.</div>
+                    </div>
+                    <div id="instruction3" class="col instruction">
+                        <div class="avatar"></div>
+                        <div class="textname">Shoot a fireball!</div>
+                        <div class="textblock">3 charges with &lt;SHIFT&gt;.</div>
+                    </div>
+                </div>
+                <div class="row players">
+                    <div id="players-subtitle" class="col player">Players:</div>
+                    <div id="player1" class="col player">
+                        <div class="avatar"></div>
+                        <div class="name"></div>
+                        <div class="record"></div>
+                        <div class="status"></div>
+                    </div>
+                    <div id="player2" class="col player">
+                        <div class="avatar"></div>
+                        <div class="name"></div>
+                        <div class="record"></div>
+                        <div class="status"></div>
+                    </div>
+                </div>
+                <div id="game-message" class="message"></div>
+                <div class="row">
+                    <button id="ready-button">Get Ready!</button>
+                    <button id="leave-button" type="button">Leave Lobby</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game page -->
+        <div id="game-room-game-page" style="display: none">
+            <canvas id="maze-canvas"></canvas>
+
+            <!-- HUD -->
+            <div id="game-hud" style="display: none">
+                <div class="hud-row"><span class="hud-label">Fireballs left</span><span id="hud-fireballs">3</span></div>
+                <div class="hud-row"><span class="hud-label">Time</span><span id="hud-time">00:00</span></div>
+            </div>
+
+            <div id="game-over-overlay" style="display: none">
+                <div id="game-over-title"></div>
+                <div id="game-over-reason"></div>
+                <div id="game-over-stats">
+                    <div id="game-over-time"></div>
+                    <div id="game-over-winrates"></div>
+                </div>
+                <div id="game-over-note" class="message"></div>
+                <div class="row">
+                    <button id="play-again-button" type="button">Play Again!</button>
+                    <button id="over-leave-button" type="button">Leave Lobby</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/lighting.js"></script>
+    <script src="scripts/sounds.js"></script>
+    <script src="scripts/game_room.js"></script>
+    <script src="scripts/maze_game.js"></script>
+
+    <script>
+    $(function() {
+        GameRoom.init();
+        GameRoom.validate();
+    });
+    </script>
+</body>
+</html>

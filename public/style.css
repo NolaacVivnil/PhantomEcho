@@ -1,0 +1,316 @@
+* {
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+button:disabled {
+    opacity: 0.5;
+}
+
+form {
+    align-items: stretch !important;
+}
+
+form input, form select {
+    font-size: 1rem;
+    padding: 10px 15px;
+}
+
+/*form button {
+    font-size: 1rem;
+    font-weight: normal;
+    padding: 10px 15px;
+}*/
+
+/*
+ * Other settings
+ */
+
+.row, .col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.col {
+    flex-direction: column;
+}
+
+.title {
+    font-size: 60px;
+    font-weight: bold;
+    text-align: center;
+    padding: 40px 0;
+    color: #FFF;
+}
+
+.subtitle,
+#players-subtitle {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    padding: 30px 0;
+    color: #FFF;
+}
+
+.message {
+    text-align: center;
+    font-style: italic;
+    color: #FFF;
+}
+
+/*
+ * Game room rules
+ */
+
+#game-room-area {
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+}
+
+#game-room-start-page,
+#game-room-signin-page,
+#game-room-register-page,
+#game-room-content-page,
+#game-room-lobby-page {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+}
+
+#game-room-start-page,
+#game-room-signin-page,
+#game-room-register-page,
+#game-room-content-page {
+    background-image: url("images/wall.png");
+    background-size: 256px 256px;
+    background-position: 0 0;
+    background-repeat: repeat;
+    image-rendering: pixelated;
+}
+
+#game-room-lobby-page {
+    background-image: url("images/floor.png");
+    background-size: 256px 256px;
+    background-position: 0 0;
+    background-repeat: repeat;
+    image-rendering: pixelated;
+}
+
+#game-room-start-page .title,
+#game-room-content-page .title,
+#game-room-lobby-page .title {
+    color: #FFF;
+    text-shadow: 5px 5px #000;
+}
+
+#signin-form, #register-form {
+    width: 50%;
+    min-width: 400px;
+}
+
+/*
+ * Lobby rules
+ */
+
+#game-room-lobby-page {
+    justify-content: flex-start;
+    overflow-y: auto;
+}
+
+#game-room-lobby-page .title {
+    padding: 10px 0;
+}
+
+.players, 
+.instructions {
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    color: #FFF;
+}
+
+.player,
+.instruction {
+    flex: 0 1 260px;
+    padding: 10px;
+    font-size: 18px;
+    gap: 4px;
+    border: 3px solid transparent;
+    background-color: rgba(40, 40, 40, 0.9);
+
+    align-self: stretch; /* Forces the child to match the parent's height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* One 64x64 sprite: the idle "down" frame of the player's spritesheet */
+.player .avatar,
+.instruction .avatar {
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    font-size: 40px;
+    background-size: 256px 256px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.player .avatar.sprite-1 {
+    background-image: url("images/spritesheet-player-1.png");
+}
+
+.player .avatar.sprite-2 {
+    background-image: url("images/spritesheet-player-2.png");
+}
+
+#instruction1 .avatar {
+    background-image: url("images/spritesheet-echo.png");
+}
+
+#instruction2 .avatar {
+    background-image: url("images/spritesheet-phantom.png");
+}
+
+#instruction3 .avatar {
+    background-image: url("images/spritesheet-fireball.png");
+}
+
+.player .name,
+.instruction .textname {
+    font-weight: bold;
+}
+
+.player .record,
+.player .status,
+.instruction .textblock {
+    font-size: 16px;
+}
+
+.player .status {
+    font-style: italic;
+}
+
+.player.empty {
+    opacity: 0.4;
+    border: 3px dashed #999;
+}
+
+#game-message {
+    font-size: 26px;
+}
+
+/*
+ * Game page: the canvas fills the window
+ */
+
+#game-room-game-page {
+    position: fixed;
+    inset: 0;
+    background: #000;
+}
+
+#maze-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;   /* never smooth the pixel art */
+}
+
+#game-over-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+    color: white;
+    background: rgba(40, 40, 40, 0.75);
+}
+
+#game-over-title {
+    font-size: 64px;
+    font-weight: bold;
+}
+
+#game-over-reason {
+    font-size: 32px;
+}
+
+#game-over-note {
+    min-height: 1.2em;
+}
+
+/*
+ * Info during the game (fireballs left, time): a fixed size and position, not part of the canvas
+ */
+
+#game-hud {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 280px;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 24px;
+    line-height: 1.5;
+    color: #fff;
+    text-shadow: 2px 2px #000;
+    background: rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    user-select: none;
+}
+
+#game-hud .hud-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+#game-hud span {
+    font-family: "Pixelify Sans", sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Game-over stats: elapsed time and the win rate of each player
+ */
+
+#game-over-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    font-size: 26px;
+}
+
+#game-over-winrates .winrate-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    min-width: 420px;
+}

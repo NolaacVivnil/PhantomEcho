@@ -1,0 +1,17 @@
+{
+  "tony": {
+    "password": "$argon2id$v=19$m=65536,t=3,p=4$HCMrHW3x7FdXWCrqoQOSXQ$P3kdVaR55c3GNJJs5ohCr5JASeYLbOLzwl1EqxlI2ao",
+    "wins": 3,
+    "losses": 4
+  },
+  "may": {
+    "password": "$argon2id$v=19$m=65536,t=3,p=4$xMhrz2aNUdQ3pM9J30woiw$I68tvur+uRmrYnyYNZfaYP4V8f060LSi4UY7MReA9+I",
+    "wins": 1,
+    "losses": 0
+  },
+  "hank": {
+    "password": "$argon2id$v=19$m=65536,t=3,p=4$osp9o98TfGYqB80RsnSW7Q$UfDzAWI6PQYK307oA6RMrNl43C36f8qpexS4XOIlxrg",
+    "wins": 3,
+    "losses": 3
+  }
+}
