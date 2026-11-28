@@ -12,4 +12,4 @@ WASD / arrow keys
 Q for cheat mode
 
 ## Quick demo
-[![Watch a demo](https://img.youtube.com/vi/a5Wcwnws228/hqdefault.jpg)](https://youtu.be/a5Wcwnws228)
+[![Watch a demo](https://img.youtube.com/vi/qdq_cP2JzOo/maxresdefault.jpg)](https://youtu.be/qdq_cP2JzOo)
