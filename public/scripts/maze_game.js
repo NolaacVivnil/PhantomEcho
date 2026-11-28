@@ -144,6 +144,11 @@ const MazeGame = (function() {
         return `${Math.round(100 * p.wins / games)}% (${p.wins}W / ${p.losses}L)`;
     };
 
+    const formatWilsonScore = function(p) {
+        if (!p.totalGames) return "-";
+        return `${p.wilsonScore.toFixed(2)} (${p.wins}W / ${p.losses}L)`;
+    }
+
     const drawSprite = function(ctx, sheetName, e, x, y, t, time, frame, fallback) {
         const sheet = images[sheetName];
         if (ready(sheet)) {
@@ -407,6 +412,16 @@ const MazeGame = (function() {
                 row.append($("<span></span>").text(p.username == user.username ? `${p.username} (you)` : p.username));
                 row.append($("<span></span>").text(`Win rate: ${formatWinRate(p)}`));
                 rates.append(row);
+            }
+            const leaderboard = $("#game-over-leaderboard").empty();
+            var rank = 1;
+            for (const p of result.leaderboard) {
+                console.log(p);
+                const row = $('<div class="winrate-row"></div>');
+                const displayName = p.username == user.username ? `${p.username} (you)` : p.username;
+                row.append($("<span></span>").text(`${rank++} ${displayName}`));
+                row.append($("<span></span>").text(`Wilson score: ${formatWilsonScore(p)}`));
+                leaderboard.append(row);
             }
             $("#game-over-overlay").show();
             updateWaiting();

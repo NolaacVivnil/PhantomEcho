@@ -53,6 +53,45 @@ function publicUser(username, account) {
     return { username, wins: account.wins || 0, losses: account.losses || 0 };
 }
 
+// Score calculation
+function wilsonScoreLowerBound(wins, losses, z = 1.96) {
+  const total = wins + losses;
+  if (total <= 0) return 0;
+
+  const p = wins / total;
+  const z2 = z * z;
+  const denominator = 1 + z2 / total;
+  const center = p + z2 / (2 * total);
+  const margin = z * Math.sqrt((p * (1 - p) + z2 / (4 * total)) / total);
+
+  return (center - margin) / denominator;
+}
+
+// Top 3 players
+function getTopThreePlayers(z = 1.96) {
+  const users = readUsers();
+
+  return Object.entries(users)
+    .map(([username, stats]) => {
+      const wins = Number(stats.wins) || 0;
+      const losses = Number(stats.losses) || 0;
+      const totalGames = wins + losses;
+      const score = wilsonScoreLowerBound(wins, losses, z);
+
+      return {
+        username,
+        wins,
+        losses,
+        totalGames,
+        winRate: totalGames > 0 ? wins / totalGames : 0,
+        wilsonScore: score,
+      };
+    })
+    .filter((player) => player.totalGames > 0)
+    .sort((a, b) => b.wilsonScore - a.wilsonScore || b.wins - a.wins)
+    .slice(0, 3);
+}
+
 // Store the result of a game; returns the new records of both players
 function recordResult(winner, loser) {
     const users = readUsers();
@@ -226,7 +265,7 @@ const endGame = (result) => {
 
     stopGame();
     lobby.finish(records);
-    io.to("lobby").emit("game_end", { ...result, elapsedMs, players: lobby.snapshot() });
+    io.to("lobby").emit("game_end", { ...result, elapsedMs, players: lobby.snapshot(), leaderboard: getTopThreePlayers() });
     broadcastPlayers();
 };
 

@@ -308,7 +308,8 @@ form input, form select {
     font-size: 26px;
 }
 
-#game-over-winrates .winrate-row {
+#game-over-winrates .winrate-row,
+#game-over-leaderboard .winrate-row {
     display: flex;
     justify-content: space-between;
     gap: 40px;
